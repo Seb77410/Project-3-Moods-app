@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.MainActivity"
+    tools:ignore="MissingDefaultResource"
+    android:id="@+id/layout_main_test"
+    >
+
+    <ViewFlipper
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/flipperView"
+        android:inAnimation="@android:anim/fade_in"
+        android:outAnimation="@android:anim/fade_out"
+        >
+
+        <ImageView
+            android:id="@+id/smileySuperHappyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="@color/banana_yellow"
+            android:src="@mipmap/smiley_super_happy"
+            tools:ignore="ContentDescription"
+            />
+
+        <ImageView
+            android:id="@+id/smileyHappyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="@color/light_sage"
+            android:src="@mipmap/smiley_happy"
+            tools:ignore="ContentDescription"
+            />
+
+        <ImageView
+            android:id="@+id/smileyNormalView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/smiley_normal"
+            android:background="@color/cornflower_blue_65"
+            android:adjustViewBounds="true"
+            />
+
+        <ImageView
+            android:id="@+id/smileyDisapointedView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/smiley_disappointed"
+            android:background="@color/warm_grey"
+            android:adjustViewBounds="true"
+            />
+
+        <ImageView
+            android:id="@+id/smileySadView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/smiley_sad"
+            android:background="@color/faded_red"
+            android:adjustViewBounds="true"
+            />
+
+    </ViewFlipper>
+
+
+    <ImageButton
+        android:id="@+id/historyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/trans"
+        android:src="@mipmap/ic_history_black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription"
+        />
+
+    <ImageButton
+        android:id="@+id/commentsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/trans"
+        android:src="@mipmap/ic_note_add_black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription"
+        />
+
+</android.support.constraint.ConstraintLayout>
