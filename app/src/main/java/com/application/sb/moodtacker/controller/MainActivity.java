@@ -38,13 +38,15 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     // Shared preferences VALUES
     private SharedPreferences moodPreferences;
-    private String mood = "mood";
+    public static String currentMood = "currentMood";
+
+    // The mood of the day
+    public static Moods moods = new Moods(1, null);
 
     // The current Mood position in the ViewFlipper
     private int thisMood = 1;
 
-    // Tableau d'objets MOOD
-    public static ArrayList<Moods> moodsArrayList = new ArrayList<>();
+
 
     // Tableau de musiques
     int musicTab[] = {R.raw.very_happy, R.raw.happy, R.raw.normal, R.raw.disapointed, R.raw.sad};
@@ -96,16 +98,22 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                         EditText commentsEdit = alertDialogView.findViewById(R.id.editText);
                         String comment = commentsEdit.getText().toString();
 
-                        // New Mood
+                        // I set the Mood mood of the day
                         thisMood = vFlipper.getDisplayedChild();
-                        Moods currentMood = new Moods(thisMood, comment);
-                        moodsArrayList.add(currentMood);
+                        moods.setPosition(thisMood);
+                        moods.setComment(comment);
+
+                        // We make the Mood of the Day to json
+                        Gson gson = new Gson();
+                        String jsonMoodOfTheDay = gson.toJson(moods);
+                        // And we save it in a preference
+                        SharedPreferences.Editor moodOfTheDayPrefEditor = moodPreferences.edit();
+                        moodOfTheDayPrefEditor.putString(currentMood, jsonMoodOfTheDay).apply();
 
                         // New Toast to confirm the save
-                        Toast.makeText(activity , "Save",Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity, "Save", Toast.LENGTH_LONG).show();
                     }
-                });
-                myComment.setView(alertDialogView);
+                }).setView(alertDialogView);
                 myComment.show();
             }
         });
@@ -214,10 +222,9 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     @Override
     protected void onResume() {
         super.onResume();
-
-        //We verify if preference is allready create
+/*
+        //We verify if ArrayList preference is allready create
         moodPreferences = getBaseContext().getSharedPreferences(mood, MODE_PRIVATE);
-
         // If she is allready create ...
             if(moodPreferences.contains(mood)) {
                 //... We get it
@@ -227,22 +234,36 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 Type type = new TypeToken<ArrayList<Moods>>() {}.getType();
                 moodsArrayList = gson.fromJson(json, type);
             }
+
+         // We verify if the Mood of the day preference is already create
+        moodPreferences = getBaseContext().getSharedPreferences(currentMood, MODE_PRIVATE);
+        // If she is already create
+        if(moodPreferences.contains(currentMood)) {
+            //... We get it
+            String json = moodPreferences.getString(currentMood, null);
+            // And we get Mood object tab
+            Gson gson = new Gson();
+            Type type = new TypeToken<Moods>() {}.getType();
+            mood = gson.fromJson(json, type);
+        }
+        //==>> A DEPLACER DANS LE ON CLICK DU BOUTON CONFIRM ??
+*/
+
         System.out.println("MainActivity::onResume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // We make the tab to json
+/*
+        // We make the Moods ArrayList to json
          Gson gson = new Gson();
-         String jsonMood = gson.toJson(moodsArrayList);
-
+         String jsonMoodList = gson.toJson(moodsArrayList);
         //And we save it in a preference
-        SharedPreferences.Editor moodEditor = moodPreferences.edit();
-        moodEditor.putString(mood, jsonMood).apply();
-
+        SharedPreferences.Editor arrayPrefEditor = moodPreferences.edit();
+        arrayPrefEditor.putString(mood, jsonMoodList).apply();
         System.out.println("MainActivity::onPause");
-    }
+*/    }
 
     @Override
     protected void onStop() {
@@ -255,5 +276,4 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         super.onDestroy();
         System.out.println("MainActivity::onDestroy");
     }
-
 }
