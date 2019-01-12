@@ -1,6 +1,8 @@
 package com.application.sb.moodtacker.controller;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,11 +21,10 @@ import android.widget.ViewFlipper;
 
 import com.application.sb.moodtacker.R;
 import com.application.sb.moodtacker.model.Moods;
+import com.application.sb.moodtacker.model.MyAlarmManager;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
@@ -37,19 +38,13 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private MainActivity activity;
 
     // Shared preferences VALUES
-    private SharedPreferences moodPreferences;
-    public static String currentMood = "currentMood";
-
-    // The mood of the day
-    public static Moods moods = new Moods(1, null);
+    private String currentMood = "currentMood";
 
     // The current Mood position in the ViewFlipper
     private int thisMood = 1;
 
-
-
-    // Tableau de musiques
-    int musicTab[] = {R.raw.very_happy, R.raw.happy, R.raw.normal, R.raw.disapointed, R.raw.sad};
+    // The music tab
+    private int musicTab[] = {R.raw.very_happy, R.raw.happy, R.raw.normal, R.raw.disapointed, R.raw.sad};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +54,12 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
         System.out.println("MainActivity::onCreate");
 
+        startAlarm();
+
         // References
         this.activity = this;
         ImageButton commentsButton = findViewById(R.id.commentsButton);
         ImageButton historyButton = findViewById(R.id.historyButton);
-        moodPreferences = getPreferences(MODE_PRIVATE);
         gestureDetector = new GestureDetector(MainActivity.this, MainActivity.this);
         // I create my Constraint Layout
         vFlipper = findViewById(R.id.flipperView);
@@ -80,16 +76,16 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
                 // On instancie notre layout en tant que View
                 LayoutInflater inflater = activity.getLayoutInflater();
-                final View alertDialogView = inflater.inflate(R.layout.comments, null );
+                final View alertDialogView = inflater.inflate(R.layout.comments, null);
 
-                    // The "CANCEL" button
+                // The "CANCEL" button
                 myComment.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 });
 
-                    // The "CONFIRM" button
+                // The "CONFIRM" button
                 myComment.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -98,17 +94,17 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                         EditText commentsEdit = alertDialogView.findViewById(R.id.editText);
                         String comment = commentsEdit.getText().toString();
 
-                        // I set the Mood mood of the day
+                        // I create the Mood mood of the day
                         thisMood = vFlipper.getDisplayedChild();
-                        moods.setPosition(thisMood);
-                        moods.setComment(comment);
+                        Moods mood = new Moods(thisMood, comment);
 
                         // We make the Mood of the Day to json
                         Gson gson = new Gson();
-                        String jsonMoodOfTheDay = gson.toJson(moods);
+                        String json = gson.toJson(mood);
                         // And we save it in a preference
+                        SharedPreferences moodPreferences = getSharedPreferences(currentMood, MODE_PRIVATE);
                         SharedPreferences.Editor moodOfTheDayPrefEditor = moodPreferences.edit();
-                        moodOfTheDayPrefEditor.putString(currentMood, jsonMoodOfTheDay).apply();
+                        moodOfTheDayPrefEditor.putString(currentMood, json).apply();
 
                         // New Toast to confirm the save
                         Toast.makeText(activity, "Save", Toast.LENGTH_LONG).show();
@@ -126,6 +122,31 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 startActivity(historyActivity);
             }
         });
+    }
+
+    public void startAlarm() {
+        // L'intention de l'alarme
+        Intent alarmIntent = new Intent(getApplicationContext(), MyAlarmManager.class);
+
+        // Le PendingIntant
+        PendingIntent pi = PendingIntent.getBroadcast(this.getApplicationContext(), 0, alarmIntent, 0);
+
+        // Je créé l'alarme
+        getBaseContext();
+        AlarmManager alarmManager = (AlarmManager) getBaseContext().getSystemService(ALARM_SERVICE);
+
+        // L'heure de déclanchement de l'alarme
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 8);                       // REMPLACER PAR 0
+        calendar.set(Calendar.MINUTE, 55);                           // REMPLACER PAR 0
+        calendar.set(Calendar.SECOND, 0);
+
+        // Elle se déclenche toutes les minutes
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES / 15, pi);
+        // AlarmManager.INTERVAL_DAY
+
+        Toast.makeText(getApplicationContext(), "L'alarme est lancée", Toast.LENGTH_LONG).show();
+
     }
 
     // The Mood swipe
@@ -163,13 +184,11 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         MediaPlayer mediaPlayer;
         if (e1.getY() - e2.getY() > 500) {
             Toast.makeText(MainActivity.this, "You Swiped Down!", Toast.LENGTH_LONG).show();
+            // TODO : pourquoi cela donne une alerte ?
             //vFlipper.setInAnimation(this, R.anim.abc_slide_in_bottom);
             //vFlipper.setOutAnimation(this, R.anim.abc_slide_out_top);
             vFlipper.showNext();
-            thisMood++;
-            if(thisMood>4){
-                thisMood=0;
-            }
+            thisMood = vFlipper.getDisplayedChild();
             mediaPlayer = MediaPlayer.create(getApplicationContext(), musicTab[thisMood]);
             mediaPlayer.start();
             return true;
@@ -181,10 +200,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             //vFlipper.setInAnimation(this,R.anim.abc_slide_in_top);
             //vFlipper.setOutAnimation(this, R.anim.abc_slide_out_bottom);
             vFlipper.showPrevious();
-            thisMood--;
-            if(thisMood<0){
-                thisMood=4;
-            }
+            thisMood = vFlipper.getDisplayedChild();
             mediaPlayer = MediaPlayer.create(getApplicationContext(), musicTab[thisMood]);
             mediaPlayer.start();
             return true;
@@ -202,78 +218,12 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             return false;
                 }
 */
-       return true;
+        return true;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        //
+        //TODO : demander pourquoi ?
         return gestureDetector.onTouchEvent(motionEvent);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //loadData();
-        System.out.println("MainActivity::onStart");
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-/*
-        //We verify if ArrayList preference is allready create
-        moodPreferences = getBaseContext().getSharedPreferences(mood, MODE_PRIVATE);
-        // If she is allready create ...
-            if(moodPreferences.contains(mood)) {
-                //... We get it
-                String json = moodPreferences.getString(mood, null);
-                // And we get Mood object tab
-                Gson gson = new Gson();
-                Type type = new TypeToken<ArrayList<Moods>>() {}.getType();
-                moodsArrayList = gson.fromJson(json, type);
-            }
-
-         // We verify if the Mood of the day preference is already create
-        moodPreferences = getBaseContext().getSharedPreferences(currentMood, MODE_PRIVATE);
-        // If she is already create
-        if(moodPreferences.contains(currentMood)) {
-            //... We get it
-            String json = moodPreferences.getString(currentMood, null);
-            // And we get Mood object tab
-            Gson gson = new Gson();
-            Type type = new TypeToken<Moods>() {}.getType();
-            mood = gson.fromJson(json, type);
-        }
-        //==>> A DEPLACER DANS LE ON CLICK DU BOUTON CONFIRM ??
-*/
-
-        System.out.println("MainActivity::onResume");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-/*
-        // We make the Moods ArrayList to json
-         Gson gson = new Gson();
-         String jsonMoodList = gson.toJson(moodsArrayList);
-        //And we save it in a preference
-        SharedPreferences.Editor arrayPrefEditor = moodPreferences.edit();
-        arrayPrefEditor.putString(mood, jsonMoodList).apply();
-        System.out.println("MainActivity::onPause");
-*/    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        System.out.println("MainActivity::onStop");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        System.out.println("MainActivity::onDestroy");
     }
 }
