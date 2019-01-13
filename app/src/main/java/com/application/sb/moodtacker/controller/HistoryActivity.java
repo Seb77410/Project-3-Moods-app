@@ -23,14 +23,10 @@ import java.util.ArrayList;
 
 public class HistoryActivity extends AppCompatActivity {
 
-    // La préférence
-    private SharedPreferences moodPreferences;
-    private String moodArrayList = "moodArrayList";
-
     // Date tab
     private String dateTab[] = {"One day ago", "Two days ago", "Three days ago", "Four days ago", "Five days ago", "Six days ago", "Seven days ago"};
 
-    public static ArrayList<Moods> moodsArrayList = new ArrayList<>();
+    private ArrayList<Moods> moodsArrayList = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +40,7 @@ public class HistoryActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         // Sreen size values
         int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
+        int height = metrics.heightPixels ;
         // TextView size
         int sizeTab[] = {width, (width / moodNb) * (moodNb - 1), (width / moodNb) * (moodNb - 2), (width / moodNb) * (moodNb - 3), width / moodNb};
 
@@ -57,7 +53,9 @@ public class HistoryActivity extends AppCompatActivity {
         historyActivity.setBackgroundColor(getResources().getColor(R.color.grey));
 
         // We get the Mood ArrayList Saved
-        moodPreferences = getBaseContext().getSharedPreferences(moodArrayList, MODE_PRIVATE);
+        // La préférence
+        String moodArrayList = "moodArrayList";
+        SharedPreferences moodPreferences = getBaseContext().getSharedPreferences(moodArrayList, MODE_PRIVATE);
         if(moodPreferences.contains(moodArrayList)) {
             //... We get it
             String json = moodPreferences.getString(moodArrayList, null);
@@ -65,7 +63,7 @@ public class HistoryActivity extends AppCompatActivity {
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<Moods>>() {}.getType();
             moodsArrayList = gson.fromJson(json, type);
-        }
+            }
 
         // Dynamic View
         if (moodsArrayList.size() > 0) {  // Si le tableau Mood comprend au moins 1 element

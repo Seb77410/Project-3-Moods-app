@@ -16,10 +16,8 @@ public class Moods {
     public void setImage(int image) {this.image = image;}
 
     public String getComment() {return comment;}
-    public void setComment(String comment) {this.comment = comment;}
 
     public int getPosition() {return position;}
-    public void setPosition(int position) {this.position = position;}
 
     public Moods(int position, String comment) {
         this.position = position;
