@@ -47,6 +47,7 @@
             android:src="@mipmap/smiley_normal"
             android:background="@color/cornflower_blue_65"
             android:adjustViewBounds="true"
+            tools:ignore="ContentDescription"
             />
 
         <ImageView
@@ -56,6 +57,7 @@
             android:src="@mipmap/smiley_disappointed"
             android:background="@color/warm_grey"
             android:adjustViewBounds="true"
+            tools:ignore="ContentDescription"
             />
 
         <ImageView
@@ -65,6 +67,7 @@
             android:src="@mipmap/smiley_sad"
             android:background="@color/faded_red"
             android:adjustViewBounds="true"
+            tools:ignore="ContentDescription"
             />
 
     </ViewFlipper>

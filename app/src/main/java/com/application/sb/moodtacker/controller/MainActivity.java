@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,6 +23,7 @@ import android.widget.ViewFlipper;
 import com.application.sb.moodtacker.R;
 import com.application.sb.moodtacker.model.Moods;
 import com.application.sb.moodtacker.model.MyAlarmManager;
+import com.application.sb.moodtacker.tool.Constantes;
 import com.google.gson.Gson;
 
 import java.util.Calendar;
@@ -37,14 +39,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     // I create the activity
     private MainActivity activity;
 
-    // Shared preferences VALUES
-    private String currentMood = "currentMood";
-
     // The current Mood position in the ViewFlipper
     private int thisMood = 1;
-
-    // The music tab
-    private int musicTab[] = {R.raw.very_happy, R.raw.happy, R.raw.normal, R.raw.disapointed, R.raw.sad};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +50,11 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
         System.out.println("MainActivity::onCreate");
 
+        // We create my ViewFlipper
+        vFlipper = findViewById(R.id.flipperView);
+        // Default ViewFlipper view
+        vFlipper.setDisplayedChild(1);
+
         startAlarm();
 
         // References
@@ -61,11 +62,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         ImageButton commentsButton = findViewById(R.id.commentsButton);
         ImageButton historyButton = findViewById(R.id.historyButton);
         gestureDetector = new GestureDetector(MainActivity.this, MainActivity.this);
-        // I create my Constraint Layout
-        vFlipper = findViewById(R.id.flipperView);
 
-        // Default ViewFlipper view
-        vFlipper.setDisplayedChild(1);
 
         // Comments alert dialogue
         commentsButton.setOnClickListener(new View.OnClickListener() {
@@ -102,9 +99,9 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                         Gson gson = new Gson();
                         String json = gson.toJson(mood);
                         // And we save it in a preference
-                        SharedPreferences moodPreferences = getSharedPreferences(currentMood, MODE_PRIVATE);
+                        SharedPreferences moodPreferences = getSharedPreferences(Constantes.CURRENT_MOOD, MODE_PRIVATE);
                         SharedPreferences.Editor moodOfTheDayPrefEditor = moodPreferences.edit();
-                        moodOfTheDayPrefEditor.putString(currentMood, json).apply();
+                        moodOfTheDayPrefEditor.putString(Constantes.CURRENT_MOOD, json).apply();
 
                         // New Toast to confirm the save
                         Toast.makeText(activity, "Save", Toast.LENGTH_LONG).show();
@@ -124,29 +121,30 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         });
     }
 
+    /**
+     * We create an alarm that react with MyAlarmManager.class at midnight every day
+     */
     public void startAlarm() {
-        // L'intention de l'alarme
+        // The alarm Intent
         Intent alarmIntent = new Intent(getApplicationContext(), MyAlarmManager.class);
 
-        // Le PendingIntant
+        // The PendingIntent
         PendingIntent pi = PendingIntent.getBroadcast(this.getApplicationContext(), 0, alarmIntent, 0);
 
-        // Je créé l'alarme
+        // I create the alarm
         getBaseContext();
         AlarmManager alarmManager = (AlarmManager) getBaseContext().getSystemService(ALARM_SERVICE);
 
-        // L'heure de déclanchement de l'alarme
+        // The hour for the alarm
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 8);                       // REMPLACER PAR 0
-        calendar.set(Calendar.MINUTE, 55);                           // REMPLACER PAR 0
-        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
 
-        // Elle se déclenche toutes les minutes
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES / 15, pi);
-        // AlarmManager.INTERVAL_DAY
+        // Alarm repeat everyday at midnight
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
 
         Toast.makeText(getApplicationContext(), "L'alarme est lancée", Toast.LENGTH_LONG).show();
-
     }
 
     // The Mood swipe
@@ -173,57 +171,50 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     @Override
     public void onLongPress(MotionEvent e) {
-
     }
 
+
+    /**
+     * We change the mood on the screen and make a sound when the user make a swipe.
+     * If the user swipe to the top, we show the next ImageView in the ViewFlipper and we play next sound in musicTab.
+     * If the user swipe to the bottom, we show the previous ImageView in the ViewFlipper and we play previous sound in musicTab.
+     *
+     * @param e1 : swipe beginning location on the screen
+     * @param e2 : swipe ending location on the screen
+     */
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
-        // Swipe to the top
+        // We get the screen size
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int height = metrics.heightPixels ;
+
         // I create media player
         MediaPlayer mediaPlayer;
-        if (e1.getY() - e2.getY() > 500) {
-            Toast.makeText(MainActivity.this, "You Swiped Down!", Toast.LENGTH_LONG).show();
-            // TODO : pourquoi cela donne une alerte ?
-            //vFlipper.setInAnimation(this, R.anim.abc_slide_in_bottom);
-            //vFlipper.setOutAnimation(this, R.anim.abc_slide_out_top);
+
+        // Swipe to the top
+        if (e1.getY() - e2.getY() > height/10) {
             vFlipper.showNext();
             thisMood = vFlipper.getDisplayedChild();
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), musicTab[thisMood]);
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), Constantes.MUSIC_TAB[thisMood]);
             mediaPlayer.start();
             return true;
         }
 
         // Swipe to the bottom
-        if (e2.getY() - e1.getY() > 500) {
-            Toast.makeText(MainActivity.this, "You Swiped Up!", Toast.LENGTH_LONG).show();
-            //vFlipper.setInAnimation(this,R.anim.abc_slide_in_top);
-            //vFlipper.setOutAnimation(this, R.anim.abc_slide_out_bottom);
+        if (e2.getY() - e1.getY() > height/10) {
             vFlipper.showPrevious();
             thisMood = vFlipper.getDisplayedChild();
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), musicTab[thisMood]);
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), Constantes.MUSIC_TAB[thisMood]);
             mediaPlayer.start();
             return true;
         }
-
-/*        if (e1.getX() - e2.getX() > 500) {
-            Toast.makeText(MainActivity.this, "You Swiped Left!", Toast.LENGTH_LONG).show();
-            return true;
-        }
-
-        if (e2.getX() - e1.getX() > 500) {
-            Toast.makeText(MainActivity.this, "You Swiped Right!", Toast.LENGTH_LONG).show();
-            return true;
-        } else {
-            return false;
-                }
-*/
         return true;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        //TODO : demander pourquoi ?
         return gestureDetector.onTouchEvent(motionEvent);
     }
 }

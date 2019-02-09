@@ -1,7 +1,5 @@
 package com.application.sb.moodtacker.model;
 
-import com.application.sb.moodtacker.R;
-
 public class Moods {
 
     // Values
@@ -9,8 +7,6 @@ public class Moods {
     private String comment;
     private int position;
 
-        //Tableau de couleurs
-    public static int colorsTab[] = {R.color.banana_yellow, R.color.light_sage, R.color.cornflower_blue_65, R.color.warm_grey, R.color.faded_red};
 
     public int getImage() {return image;}
     public void setImage(int image) {this.image = image;}

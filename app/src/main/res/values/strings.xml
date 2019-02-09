@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Mood Tracker</string>
+    <string name="COMMENTS">Comments</string>
+    <string name="PLZ_ENTER_YOUR_COMMENTS">Please enter your comments</string>
 </resources>
