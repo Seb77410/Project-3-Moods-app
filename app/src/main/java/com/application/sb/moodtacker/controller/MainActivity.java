@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private ViewFlipper vFlipper;
 
     // I create the activity
-    private MainActivity activity;
+    private MainActivity activity = this;
 
     // The current Mood position in the ViewFlipper
     private int thisMood = 1;
@@ -48,17 +48,14 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
-        System.out.println("MainActivity::onCreate");
-
-        // We create my ViewFlipper
+        // The View Flipper
         vFlipper = findViewById(R.id.flipperView);
-        // Default ViewFlipper view
         vFlipper.setDisplayedChild(1);
 
+        // The alarm start
         startAlarm();
 
         // References
-        this.activity = this;
         ImageButton commentsButton = findViewById(R.id.commentsButton);
         ImageButton historyButton = findViewById(R.id.historyButton);
         gestureDetector = new GestureDetector(MainActivity.this, MainActivity.this);
@@ -71,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 // New AlertDialogue
                 AlertDialog.Builder myComment = new AlertDialog.Builder(activity);
 
-                // On instancie notre layout en tant que View
+                // We instantiate our layout as a view
                 LayoutInflater inflater = activity.getLayoutInflater();
                 final View alertDialogView = inflater.inflate(R.layout.comments, null);
 
@@ -91,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                         EditText commentsEdit = alertDialogView.findViewById(R.id.editText);
                         String comment = commentsEdit.getText().toString();
 
-                        // I create the Mood mood of the day
+                        // I create the Mood of the day
                         thisMood = vFlipper.getDisplayedChild();
                         Moods mood = new Moods(thisMood, comment);
 
@@ -111,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             }
         });
 
-// History Button redirection
+        // History Button redirection
         historyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         PendingIntent pi = PendingIntent.getBroadcast(this.getApplicationContext(), 0, alarmIntent, 0);
 
         // I create the alarm
-        getBaseContext();
         AlarmManager alarmManager = (AlarmManager) getBaseContext().getSystemService(ALARM_SERVICE);
 
         // The hour for the alarm
@@ -144,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         // Alarm repeat everyday at midnight
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
 
-        Toast.makeText(getApplicationContext(), "L'alarme est lancée", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "L'alarme est lancée", Toast.LENGTH_LONG).show();
     }
 
     // The Mood swipe
