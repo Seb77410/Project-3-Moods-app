@@ -124,44 +124,48 @@ public class HistoryActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        SharedPreferences moodPreferences = getBaseContext().getSharedPreferences(String.valueOf(R.string.MOOD_ARRAYLIST), MODE_PRIVATE);
+        if(moodPreferences.contains(String.valueOf(R.string.MOOD_ARRAYLIST))) {
+            setContentView(R.layout.activity_history);
 
-        /*
-         *  We get the screen size. And we create a tab that contains every history size
-         */
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        // Screen size values
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels ;
-        // TextView size
-        int sizeTab[] = {width, (width / Constantes.MOOD_NB) * (Constantes.MOOD_NB - 1), (width / Constantes.MOOD_NB) * (Constantes.MOOD_NB - 2), (width / Constantes.MOOD_NB) * (Constantes.MOOD_NB - 3), width / Constantes.MOOD_NB};
+            /*
+            *  We get the screen size. And we create a tab that contains every history size
+            */
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            // Screen size values
+            int width = metrics.widthPixels;
+            int height = metrics.heightPixels ;
+            // TextView size
+            int sizeTab[] = {width, (width / Constantes.MOOD_NB) * (Constantes.MOOD_NB - 1), (width / Constantes.MOOD_NB) * (Constantes.MOOD_NB - 2), (width / Constantes.MOOD_NB) * (Constantes.MOOD_NB - 3), width / Constantes.MOOD_NB};
 
-        /*
-         * We create a LinearLayout that will contains every history we want show
-         */
-        LinearLayout historyActivity = findViewById(R.id.historyLayout);
-        historyActivity.setBackgroundColor(getResources().getColor(R.color.grey));
+            /*
+            * We create a LinearLayout that will contains every history we want show
+            */
+            LinearLayout historyActivity = findViewById(R.id.historyLayout);
+            historyActivity.setBackgroundColor(getResources().getColor(R.color.grey));
 
-        /*
-         *  We verify if at least one mood is already saved. If it is, we get it
-         */
-        SharedPreferences moodPreferences = getBaseContext().getSharedPreferences(Constantes.MOOD_ARRAYLIST, MODE_PRIVATE);
-        if(moodPreferences.contains(Constantes.MOOD_ARRAYLIST)) {
-            //... We get it
-            String json = moodPreferences.getString(Constantes.MOOD_ARRAYLIST, null);
-            // And we get Mood object tab
-            Gson gson = new Gson();
-            Type type = new TypeToken<ArrayList<Moods>>() {}.getType();
-            moodsArrayList = gson.fromJson(json, type);
-            }
+            /*
+             *  We verify if at least one mood is already saved. If it is, we get it
+             */
 
-        /*
-         * We create and add views for every mood saved 7 days ago
-         */
-        if (moodsArrayList != null) {
-            makeHistory(moodsArrayList, sizeTab, height, historyActivity, applicationContext);
-        }
+            if(moodPreferences.contains(String.valueOf(R.string.MOOD_ARRAYLIST))) {
+                //... We get it
+                String json = moodPreferences.getString(String.valueOf(R.string.MOOD_ARRAYLIST), null);
+                // And we get Mood object tab
+                Gson gson = new Gson();
+                Type type = new TypeToken<ArrayList<Moods>>() {}.getType();
+                moodsArrayList = gson.fromJson(json, type);
+                }
+
+            /*
+            * We create and add views for every mood saved 7 days ago
+            */
+            if (moodsArrayList != null) {
+                makeHistory(moodsArrayList, sizeTab, height, historyActivity, applicationContext);
+                }
+
+        }else {setContentView(R.layout.message);}
     }
 
 }

@@ -25,7 +25,9 @@ import com.application.sb.moodtacker.model.Moods;
 import com.application.sb.moodtacker.model.MyAlarmManager;
 import com.application.sb.moodtacker.tool.Constantes;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
@@ -50,7 +52,19 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
         // The View Flipper
         vFlipper = findViewById(R.id.flipperView);
-        vFlipper.setDisplayedChild(1);
+        SharedPreferences moodPreferences = getApplicationContext().getSharedPreferences(String.valueOf(R.string.CURRENT_MOOD), MODE_PRIVATE);
+        Moods mood;
+        if(moodPreferences.contains(String.valueOf(R.string.CURRENT_MOOD))) {
+            //... We get it
+            String json = moodPreferences.getString(String.valueOf(R.string.CURRENT_MOOD), null);
+            // And we get Mood object tab
+            Gson gson = new Gson();
+            Type type = new TypeToken<Moods>() {}.getType();
+            mood = gson.fromJson(json, type);
+            assert mood != null;
+            vFlipper.setDisplayedChild(mood.getPosition());
+        if (mood.getComment().length() >= 1){Toast.makeText(activity, mood.getComment(), Toast.LENGTH_LONG).show();}
+        }else {vFlipper.setDisplayedChild(1);}
 
         // The alarm start
         startAlarm();
@@ -96,9 +110,9 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                         Gson gson = new Gson();
                         String json = gson.toJson(mood);
                         // And we save it in a preference
-                        SharedPreferences moodPreferences = getSharedPreferences(Constantes.CURRENT_MOOD, MODE_PRIVATE);
+                        SharedPreferences moodPreferences = getSharedPreferences(String.valueOf(R.string.CURRENT_MOOD), MODE_PRIVATE);
                         SharedPreferences.Editor moodOfTheDayPrefEditor = moodPreferences.edit();
-                        moodOfTheDayPrefEditor.putString(Constantes.CURRENT_MOOD, json).apply();
+                        moodOfTheDayPrefEditor.putString(String.valueOf(R.string.CURRENT_MOOD), json).apply();
 
                         // New Toast to confirm the save
                         Toast.makeText(activity, "Save", Toast.LENGTH_LONG).show();
@@ -126,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         Intent alarmIntent = new Intent(getApplicationContext(), MyAlarmManager.class);
 
         // The PendingIntent
-        PendingIntent pi = PendingIntent.getBroadcast(this.getApplicationContext(), 0, alarmIntent, 0);
+        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, alarmIntent, 0);
 
         // I create the alarm
         AlarmManager alarmManager = (AlarmManager) getBaseContext().getSystemService(ALARM_SERVICE);
@@ -134,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         // The hour for the alarm
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.MINUTE,59);
         calendar.set(Calendar.SECOND, 59);
 
         // Alarm repeat everyday at midnight
@@ -191,21 +205,24 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
         // Swipe to the top
         if (e1.getY() - e2.getY() > height/10) {
-            vFlipper.showNext();
-            thisMood = vFlipper.getDisplayedChild();
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), Constantes.MUSIC_TAB[thisMood]);
-            mediaPlayer.start();
+            if(vFlipper.getDisplayedChild() != 0){
+                vFlipper.showPrevious();
+                thisMood = vFlipper.getDisplayedChild();
+                mediaPlayer = MediaPlayer.create(getApplicationContext(), Constantes.MUSIC_TAB[thisMood]);
+                mediaPlayer.start();}
             return true;
         }
 
         // Swipe to the bottom
         if (e2.getY() - e1.getY() > height/10) {
-            vFlipper.showPrevious();
-            thisMood = vFlipper.getDisplayedChild();
-            mediaPlayer = MediaPlayer.create(getApplicationContext(), Constantes.MUSIC_TAB[thisMood]);
-            mediaPlayer.start();
-            return true;
+            if(vFlipper.getDisplayedChild() != 4){
+                vFlipper.showNext();
+                thisMood = vFlipper.getDisplayedChild();
+                mediaPlayer = MediaPlayer.create(getApplicationContext(), Constantes.MUSIC_TAB[thisMood]);
+                mediaPlayer.start();}
+                return true;
         }
+
         return true;
     }
 

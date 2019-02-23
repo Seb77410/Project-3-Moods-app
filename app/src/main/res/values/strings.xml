@@ -1,5 +1,29 @@
 <resources>
+
+    => App name
     <string name="app_name">Mood Tracker</string>
+
+    => Shared Preferences values
+    <string name="CURRENT_MOOD">currentMood</string>
+    <string name="MOOD_ARRAYLIST">moodArrayList</string>
+
+    => Date tab values
+    <string name="ONE_DAY_AGO">One day ago</string>
+    <string name="TWO_DAYS_AGO">Two days ago</string>
+    <string name="TREE_DAYS_AGO">Tree days ago</string>
+    <string name="FOUR_DAYS_AGO">Four days ago</string>
+    <string name="FIVE_DAYS_AGO">Five days ago</string>
+    <string name="SIX_DAYS_AGO">Six days ago</string>
+    <string name="SEVEN_DAYS_AGO">Seven days ago</string>
+
+    => comments.xml values (AlertDialog)
     <string name="COMMENTS">Comments</string>
     <string name="PLZ_ENTER_YOUR_COMMENTS">Please enter your comments</string>
+
+    => message.xml values (empty History activity)
+    <string name="NO_MOOD_SAVED">No mood saved</string>
+    <string name="SAVE_AND_WAIT">Save a mood and wait midnight</string>
+
+
+
 </resources>

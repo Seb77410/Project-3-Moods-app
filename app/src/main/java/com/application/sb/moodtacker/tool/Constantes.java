@@ -11,16 +11,12 @@ public class Constantes {
     final public static int MOOD_NB = 5;
 
     // Date tab
-    final public static String DATE_TAB[] = {"One day ago", "Two days ago", "Three days ago", "Four days ago", "Five days ago", "Six days ago", "Seven days ago"};
+    final public static int DATE_TAB[] = {R.string.ONE_DAY_AGO, R.string.TWO_DAYS_AGO, R.string.TREE_DAYS_AGO, R.string.FOUR_DAYS_AGO, R.string.FIVE_DAYS_AGO, R.string.SIX_DAYS_AGO, R.string.SEVEN_DAYS_AGO};
 
     // The music tab
     final public static int MUSIC_TAB[] = {R.raw.very_happy, R.raw.happy, R.raw.normal, R.raw.disapointed, R.raw.sad};
 
     // The colors tab
     final public static int COLOR_TAB[] = {R.color.banana_yellow, R.color.light_sage, R.color.cornflower_blue_65, R.color.warm_grey, R.color.faded_red};
-
-    // Shared preferences VALUES
-    final public static String CURRENT_MOOD = "currentMood";
-    final public static String MOOD_ARRAYLIST = "moodArrayList";
 
 }
