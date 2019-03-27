@@ -124,8 +124,8 @@ public class HistoryActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences moodPreferences = getBaseContext().getSharedPreferences(String.valueOf(R.string.MOOD_ARRAYLIST), MODE_PRIVATE);
-        if(moodPreferences.contains(String.valueOf(R.string.MOOD_ARRAYLIST))) {
+        SharedPreferences moodPreferences = getBaseContext().getSharedPreferences(getString(R.string.MOOD_ARRAYLIST), MODE_PRIVATE);
+        if(moodPreferences.contains(getString(R.string.MOOD_ARRAYLIST))) {
             setContentView(R.layout.activity_history);
 
             /*
@@ -149,9 +149,9 @@ public class HistoryActivity extends AppCompatActivity {
              *  We verify if at least one mood is already saved. If it is, we get it
              */
 
-            if(moodPreferences.contains(String.valueOf(R.string.MOOD_ARRAYLIST))) {
+            if(moodPreferences.contains(getString(R.string.MOOD_ARRAYLIST))) {
                 //... We get it
-                String json = moodPreferences.getString(String.valueOf(R.string.MOOD_ARRAYLIST), null);
+                String json = moodPreferences.getString(getString(R.string.MOOD_ARRAYLIST), null);
                 // And we get Mood object tab
                 Gson gson = new Gson();
                 Type type = new TypeToken<ArrayList<Moods>>() {}.getType();

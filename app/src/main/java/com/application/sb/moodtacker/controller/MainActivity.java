@@ -1,8 +1,6 @@
 package com.application.sb.moodtacker.controller;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,7 +26,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
@@ -50,32 +47,38 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
-        // The View Flipper
+        // The alarm start
+        MyAlarmManager.startAlarm(this);
+
+
+        // VIEW FLIPPER
+            // References
         vFlipper = findViewById(R.id.flipperView);
-        SharedPreferences moodPreferences = getApplicationContext().getSharedPreferences(String.valueOf(R.string.CURRENT_MOOD), MODE_PRIVATE);
+        SharedPreferences moodPreferences = getApplicationContext().getSharedPreferences(getString(R.string.CURRENT_MOOD), MODE_PRIVATE);
+            // View flipper default view
         Moods mood;
-        if(moodPreferences.contains(String.valueOf(R.string.CURRENT_MOOD))) {
+        if(moodPreferences.contains(getString(R.string.CURRENT_MOOD))) {
             //... We get it
-            String json = moodPreferences.getString(String.valueOf(R.string.CURRENT_MOOD), null);
+            String json = moodPreferences.getString(getString(R.string.CURRENT_MOOD), null);
             // And we get Mood object tab
             Gson gson = new Gson();
             Type type = new TypeToken<Moods>() {}.getType();
             mood = gson.fromJson(json, type);
             assert mood != null;
             vFlipper.setDisplayedChild(mood.getPosition());
-        if (mood.getComment().length() >= 1){Toast.makeText(activity, mood.getComment(), Toast.LENGTH_LONG).show();}
-        }else {vFlipper.setDisplayedChild(1);}
+        if (mood.getComment().length() >= 1){
+            Toast.makeText(activity, mood.getComment(), Toast.LENGTH_LONG).show();}
+        }else {
+            vFlipper.setDisplayedChild(1);}
 
-        // The alarm start
-        startAlarm();
 
-        // References
+        // ALERT DIALOG
+            // References
         ImageButton commentsButton = findViewById(R.id.commentsButton);
         ImageButton historyButton = findViewById(R.id.historyButton);
         gestureDetector = new GestureDetector(MainActivity.this, MainActivity.this);
 
-
-        // Comments alert dialogue
+            // Comments alert dialogue
         commentsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,9 +113,9 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                         Gson gson = new Gson();
                         String json = gson.toJson(mood);
                         // And we save it in a preference
-                        SharedPreferences moodPreferences = getSharedPreferences(String.valueOf(R.string.CURRENT_MOOD), MODE_PRIVATE);
+                        SharedPreferences moodPreferences = getSharedPreferences(getString(R.string.CURRENT_MOOD), MODE_PRIVATE);
                         SharedPreferences.Editor moodOfTheDayPrefEditor = moodPreferences.edit();
-                        moodOfTheDayPrefEditor.putString(String.valueOf(R.string.CURRENT_MOOD), json).apply();
+                        moodOfTheDayPrefEditor.putString(getString(R.string.CURRENT_MOOD), json).apply();
 
                         // New Toast to confirm the save
                         Toast.makeText(activity, "Save", Toast.LENGTH_LONG).show();
@@ -132,32 +135,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         });
     }
 
-    /**
-     * We create an alarm that react with MyAlarmManager.class at midnight every day
-     */
-    public void startAlarm() {
-        // The alarm Intent
-        Intent alarmIntent = new Intent(getApplicationContext(), MyAlarmManager.class);
-
-        // The PendingIntent
-        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, alarmIntent, 0);
-
-        // I create the alarm
-        AlarmManager alarmManager = (AlarmManager) getBaseContext().getSystemService(ALARM_SERVICE);
-
-        // The hour for the alarm
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE,59);
-        calendar.set(Calendar.SECOND, 59);
-
-        // Alarm repeat everyday at midnight
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pi);
-
-        //Toast.makeText(getApplicationContext(), "L'alarme est lancée", Toast.LENGTH_LONG).show();
-    }
-
-    // The Mood swipe
+    // MOOD SWIPE
 
     @Override
     public boolean onDown(MotionEvent e) {
@@ -166,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     @Override
     public void onShowPress(MotionEvent e) {
-
     }
 
     @Override
@@ -222,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 mediaPlayer.start();}
                 return true;
         }
-
         return true;
     }
 

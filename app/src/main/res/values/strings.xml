@@ -6,6 +6,10 @@
     => Shared Preferences values
     <string name="CURRENT_MOOD">currentMood</string>
     <string name="MOOD_ARRAYLIST">moodArrayList</string>
+    <string name="CALENDAR">calendar</string>
+
+    => Default Mood Comment
+    <string name="DEFAULT_COMMENT">Default comment</string>
 
     => Date tab values
     <string name="ONE_DAY_AGO">One day ago</string>

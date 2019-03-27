@@ -20,7 +20,12 @@
         </activity>
         <activity android:name=".controller.HistoryActivity" />
 
-        <receiver android:name="com.application.sb.moodtacker.model.MyAlarmManager" ></receiver>
+        <receiver
+            android:name=".model.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" >
+        </receiver>
+
 
     </application>
 
