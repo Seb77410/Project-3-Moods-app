@@ -64,7 +64,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         updateMoodArrayList(context);
-        MyAlarmManager.startAlarm(context);
     }
 }
 
