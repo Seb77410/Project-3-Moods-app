@@ -206,4 +206,5 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     public boolean onTouchEvent(MotionEvent motionEvent) {
         return gestureDetector.onTouchEvent(motionEvent);
     }
+
 }

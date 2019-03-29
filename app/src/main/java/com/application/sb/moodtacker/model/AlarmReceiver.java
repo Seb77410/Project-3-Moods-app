@@ -15,7 +15,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private  ArrayList<Moods> moodsArrayList = new ArrayList<>();
+    private ArrayList<Moods> moodsArrayList = new ArrayList<>();
 
 
     /**
@@ -23,11 +23,11 @@ public class AlarmReceiver extends BroadcastReceiver {
      *
      * @param context is the context
      */
-    private void updateMoodArrayList(Context context){
+    private void updateMoodArrayList(Context context) {
 
         // We verify if the Mood ArrayList is already saved
         SharedPreferences arrayPreferences = context.getSharedPreferences(context.getString(R.string.MOOD_ARRAYLIST), MODE_PRIVATE);
-        if(arrayPreferences.contains(context.getString(R.string.MOOD_ARRAYLIST))) {
+        if (arrayPreferences.contains(context.getString(R.string.MOOD_ARRAYLIST))) {
             //... We get it
             String json = arrayPreferences.getString(context.getString(R.string.MOOD_ARRAYLIST), null);
             // And we get Mood object tab
@@ -40,15 +40,18 @@ public class AlarmReceiver extends BroadcastReceiver {
         // We get the Mood we want to add
         SharedPreferences moodPreferences = context.getSharedPreferences(context.getString(R.string.CURRENT_MOOD), MODE_PRIVATE);
         Moods mood;
-        if(moodPreferences.contains(context.getString(R.string.CURRENT_MOOD))) {
+        if (moodPreferences.contains(context.getString(R.string.CURRENT_MOOD))) {
             //... We get it
             String json = moodPreferences.getString(context.getString(R.string.CURRENT_MOOD), null);
             // And we get Mood object tab
             Gson gson = new Gson();
-            Type type = new TypeToken<Moods>() {}.getType();
+            Type type = new TypeToken<Moods>() {
+            }.getType();
             mood = gson.fromJson(json, type);
             context.getSharedPreferences(context.getString(R.string.CURRENT_MOOD), MODE_PRIVATE).edit().clear().apply();
-        }else{mood = new Moods(1, context.getString(R.string.DEFAULT_COMMENT));}
+        } else {
+            mood = new Moods(1, context.getString(R.string.DEFAULT_COMMENT));
+        }
 
         // We add the mood to the mood tab
         moodsArrayList.add(mood);
@@ -60,10 +63,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         arrayPrefEditor.putString(context.getString(R.string.MOOD_ARRAYLIST), json).apply();
     }
 
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
         updateMoodArrayList(context);
     }
 }
-

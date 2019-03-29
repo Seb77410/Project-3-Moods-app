@@ -18,9 +18,10 @@ public class MyAlarmManager {
 
         // Alarm config
         Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        //calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE,59);
+        calendar.set(Calendar.MINUTE, 59);
         calendar.set(Calendar.SECOND, 59);
 
         // Alarm references
@@ -30,7 +31,7 @@ public class MyAlarmManager {
 
         // The alarm will start everyday
         if (alarmManager != null) {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         }
 
 
