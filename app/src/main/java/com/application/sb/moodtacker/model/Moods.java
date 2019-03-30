@@ -15,6 +15,9 @@ public class Moods {
 
     public int getPosition() {return position;}
 
+    public void setPosition(int position) {
+        this.position = position; }
+
     public Moods(int position, String comment) {
         this.position = position;
         this.comment = comment;

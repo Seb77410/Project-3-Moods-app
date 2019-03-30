@@ -27,6 +27,7 @@
     => message.xml values (empty History activity)
     <string name="NO_MOOD_SAVED">No mood saved</string>
     <string name="SAVE_AND_WAIT">Save a mood and wait midnight</string>
+    <string name="COMMENT_SAVED">Comment saved : </string>
 
 
 

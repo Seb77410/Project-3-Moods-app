@@ -1,4 +1,4 @@
-package com.application.sb.moodtacker.model;
+package com.application.sb.moodtacker.AlarmManager;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.application.sb.moodtacker.R;
+import com.application.sb.moodtacker.model.Moods;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;

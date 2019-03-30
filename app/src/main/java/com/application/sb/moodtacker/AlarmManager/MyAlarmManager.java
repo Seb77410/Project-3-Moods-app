@@ -1,4 +1,4 @@
-package com.application.sb.moodtacker.model;
+package com.application.sb.moodtacker.AlarmManager;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
