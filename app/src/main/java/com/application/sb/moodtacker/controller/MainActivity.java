@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         // The alarm start
         MyAlarmManager.startAlarm(this);
 
-
         // VIEW FLIPPER
             // References
         vFlipper = findViewById(R.id.flipperView);

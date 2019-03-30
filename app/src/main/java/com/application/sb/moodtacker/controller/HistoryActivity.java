@@ -96,6 +96,12 @@ public class HistoryActivity extends AppCompatActivity {
      *  We add a new RelativeLayout for every mood saved.
      *  We add a TextView to the RelativeLayout. The TextView specifies how many days ago the mood was saved.
      *  If the mood contains a comment, we display the button that allows to access it with a Toast.
+     *
+     * @param arrayList Is the array that contains already saved Mood
+     * @param tab Is a tab that contains every possible layout width
+     * @param screenSize is the height screen size
+     * @param linearLayout is the principal layout that we add avery constraint layout
+     * @param context is the context
      */
     private void makeHistory(final ArrayList<Moods> arrayList, int tab[], int screenSize, LinearLayout linearLayout, final Context context){
         if (arrayList.size() > 0) {  // Si le tableau Mood comprend au moins 1 element
