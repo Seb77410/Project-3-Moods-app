@@ -4,7 +4,7 @@ This application consists of recording the user's mood of the day. He selects a 
 
 <img src = "https://github.com/Seb77410/Project-3-Moods-app/blob/master/app/src/main/res/drawable/Screenshot_1614873092.png" width ="200" height="400">
 
-<img src = "https://github.com/Seb77410/Project-3-Moods-app/blob/master/app/src/main/res/drawable/screenshot_1614880330.png" width ="250" height="400">
+<img src = "https://github.com/Seb77410/Project-3-Moods-app/blob/master/app/src/main/res/drawable/screenshot_1614880330.png" width ="200" height="400">
 
 ## Libraries
     - Gson
