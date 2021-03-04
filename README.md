@@ -1,15 +1,6 @@
-De quoi s'agit il ?
+# Mood Tracker
+***
 
-==> Ici se trouve la première application d'un futur développeur de génie (ou pas d'ailleurs, seul l'avenir nous le dira :p).
+This application consists of recording the user's mood of the day. He selects a daily mood that he can change at any time and adds a comment if he wishes. The mood definitely registers every day at midnight. He can also consult the history of his moods over a period of 7 days.
 
-
-Le contexte
-
-==> Dans le cadre d'une formation afin de devenir développeur d'application, j'ai été amené à développer celle-ci. Qui je l'espère sera la première d'une longue série.
-
-
-Le concept
-
-==> Cette app consiste à enregistrer l'humeur du jour de l'utilisateur. Celui-ci sélectionne une humeur journalière qu'il peut changer à tout moment et y ajoute, s'il le souhaite, un commentaire. L'humeur s'enregistre définitivement tous les jours à minuit. Il peut également consulter l'historique de ses humeurs sur une période de 7 jours
-
-PS : si vous êtes actuellement en train de lire ceci, c’est que vous êtes certainement un mentor d’OpenClassrooms. Et il se pourrait même que vous soyez celui qui me fera passer la soutenance de ce projet. Alors soyez indulgent SVP :D
+![alt text](https://github.com/Seb77410/Project-3-Moods-app/blob/master/app/src/main/res/drawable/Screenshot_1614873092.png?raw=true)
