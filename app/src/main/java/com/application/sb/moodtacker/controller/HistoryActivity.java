@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.application.sb.moodtacker.R;
 import com.application.sb.moodtacker.model.Moods;
-import com.application.sb.moodtacker.tool.Constantes;
+import com.application.sb.moodtacker.tool.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -44,7 +44,7 @@ public class HistoryActivity extends AppCompatActivity {
     private void setRelativeLayout(Context context, int[] tab, ArrayList<Moods> arrayList, int j, int screenSize){
         // New Relative Layout
         RelativeLayout layout = new RelativeLayout(context);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(tab[arrayList.get(j).getPosition()], screenSize / Constantes.HISTORY_NB);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(tab[arrayList.get(j).getPosition()], screenSize / Constants.HISTORY_NB);
         layout.setLayoutParams(layoutParams);
         relativeLayout = layout;
     }
@@ -61,8 +61,8 @@ public class HistoryActivity extends AppCompatActivity {
         TextView myTextView = new TextView(context);
         ViewGroup.LayoutParams params = new  ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         myTextView.setLayoutParams(params);
-        myTextView.setText(Constantes.DATE_TAB[layoutPosition]);
-        myTextView.setBackgroundColor(getResources().getColor(Constantes.COLOR_TAB[arrayList.get(j).getPosition()]));
+        myTextView.setText(Constants.DATE_TAB[layoutPosition]);
+        myTextView.setBackgroundColor(getResources().getColor(Constants.COLOR_TAB[arrayList.get(j).getPosition()]));
         textView = myTextView;
     }
 
@@ -103,10 +103,10 @@ public class HistoryActivity extends AppCompatActivity {
      * @param linearLayout is the principal layout that we add avery constraint layout
      * @param context is the context
      */
-    private void makeHistory(final ArrayList<Moods> arrayList, int tab[], int screenSize, LinearLayout linearLayout, final Context context){
+    private void makeHistory(final ArrayList<Moods> arrayList, int[] tab, int screenSize, LinearLayout linearLayout, final Context context){
         if (arrayList.size() > 0) {  // Si le tableau Mood comprend au moins 1 element
             int layoutPosition = 0;
-            for (int j = arrayList.size() - 1; j > (arrayList.size() - 1) - Constantes.HISTORY_NB; j--)
+            for (int j = arrayList.size() - 1; j > (arrayList.size() - 1) - Constants.HISTORY_NB; j--)
                 if (j >= 0) {
 
                     // We set and add the RelativeLayout
@@ -143,7 +143,7 @@ public class HistoryActivity extends AppCompatActivity {
             int width = metrics.widthPixels;
             int height = metrics.heightPixels ;
             // TextView size
-            int sizeTab[] = {width, (width / Constantes.MOOD_NB) * (Constantes.MOOD_NB - 1), (width / Constantes.MOOD_NB) * (Constantes.MOOD_NB - 2), (width / Constantes.MOOD_NB) * (Constantes.MOOD_NB - 3), width / Constantes.MOOD_NB};
+            int[] sizeTab = {width, (width / Constants.MOOD_NB) * (Constants.MOOD_NB - 1), (width / Constants.MOOD_NB) * (Constants.MOOD_NB - 2), (width / Constants.MOOD_NB) * (Constants.MOOD_NB - 3), width / Constants.MOOD_NB};
 
             /*
             * We create a LinearLayout that will contains every history we want show

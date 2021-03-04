@@ -22,9 +22,10 @@ import android.widget.ViewFlipper;
 import com.application.sb.moodtacker.R;
 import com.application.sb.moodtacker.model.Moods;
 import com.application.sb.moodtacker.AlarmManager.MyAlarmManager;
-import com.application.sb.moodtacker.tool.Constantes;
+import com.application.sb.moodtacker.tool.Constants;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 
 import java.lang.reflect.Type;
 
@@ -254,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 vFlipper.showPrevious();
                 thisMood = vFlipper.getDisplayedChild();
                 setMoodOfTheDay(activity);
-                mediaPlayer = MediaPlayer.create(getApplicationContext(), Constantes.MUSIC_TAB[thisMood]);
+                mediaPlayer = MediaPlayer.create(getApplicationContext(), Constants.MUSIC_TAB[thisMood]);
                 mediaPlayer.start();}
             return true;
         }
@@ -265,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                 vFlipper.showNext();
                 thisMood = vFlipper.getDisplayedChild();
                 setMoodOfTheDay(activity);
-                mediaPlayer = MediaPlayer.create(getApplicationContext(), Constantes.MUSIC_TAB[thisMood]);
+                mediaPlayer = MediaPlayer.create(getApplicationContext(), Constants.MUSIC_TAB[thisMood]);
                 mediaPlayer.start();}
                 return true;
         }
@@ -287,8 +288,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         // We verify if the Mood ArrayList is already saved
         if (moodPreferences.contains(context.getString(R.string.CURRENT_MOOD))) {
             // And we get it
-            Type type = new TypeToken<Moods>() {
-            }.getType();
+            Type type = new TypeToken<Moods>() {}.getType();
             mood = gson.fromJson(json, type);
         }
 

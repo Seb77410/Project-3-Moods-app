@@ -20,55 +20,103 @@
         android:outAnimation="@android:anim/fade_out"
         >
 
-        <ImageView
-            android:id="@+id/smileySuperHappyView"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
             android:background="@color/banana_yellow"
-            android:src="@mipmap/smiley_super_happy"
-            tools:ignore="ContentDescription"
-            />
+            >
+            <ImageView
+                android:id="@+id/smileySuperHappyView"
+                android:layout_width="297dp"
+                android:layout_height="557dp"
+                android:adjustViewBounds="true"
+                android:src="@mipmap/smiley_super_happy"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+        </android.support.constraint.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/smileyHappyView"
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
             android:background="@color/light_sage"
-            android:src="@mipmap/smiley_happy"
-            tools:ignore="ContentDescription"
-            />
+            >
+            <ImageView
+                android:id="@+id/smileyHappyView"
+                android:layout_width="297dp"
+                android:layout_height="557dp"
+                android:adjustViewBounds="true"
+                android:src="@mipmap/smiley_happy"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"
+                />
+        </android.support.constraint.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/smileyNormalView"
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/smiley_normal"
             android:background="@color/cornflower_blue_65"
-            android:adjustViewBounds="true"
-            tools:ignore="ContentDescription"
-            />
+            >
+            <ImageView
+                android:id="@+id/smileyNormalView"
+                android:layout_width="297dp"
+                android:layout_height="557dp"
+                android:src="@mipmap/smiley_normal"
+                android:adjustViewBounds="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"
+                />
+        </android.support.constraint.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/smileyDisapointedView"
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/smiley_disappointed"
             android:background="@color/warm_grey"
-            android:adjustViewBounds="true"
-            tools:ignore="ContentDescription"
-            />
+            >
+            <ImageView
+                android:id="@+id/smileyDisapointedView"
+                android:layout_width="297dp"
+                android:layout_height="557dp"
+                android:src="@mipmap/smiley_disappointed"
+                android:adjustViewBounds="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"
+                />
+        </android.support.constraint.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/smileySadView"
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/smiley_sad"
             android:background="@color/faded_red"
-            android:adjustViewBounds="true"
-            tools:ignore="ContentDescription"
-            />
+            >
+            <ImageView
+                android:id="@+id/smileySadView"
+                android:layout_width="297dp"
+                android:layout_height="557dp"
+                android:src="@mipmap/smiley_sad"
+                android:adjustViewBounds="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription"
+                />
+        </android.support.constraint.ConstraintLayout>
 
     </ViewFlipper>
 
@@ -77,7 +125,6 @@
         android:id="@+id/historyButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:background="@color/trans"
         android:src="@mipmap/ic_history_black"
@@ -90,7 +137,6 @@
         android:id="@+id/commentsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:layout_marginBottom="8dp"
         android:background="@color/trans"
         android:src="@mipmap/ic_note_add_black"
